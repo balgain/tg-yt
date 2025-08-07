@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  yt-audio-bot:
+    build: .
+    container_name: youtube_audio_bot
+    restart: unless-stopped
+    environment:
+      # 这里是现在唯一的必需凭证
+      - TELEGRAM_TOKEN=YOUR_TELEGRAM_TOKEN_HERE # <--- 在这里填入您的BOT_TOKEN
+      # (可选) 您也可以在这里覆盖默认的50MB文件大小限制
+      # - MAX_SIZE_BYTES=52428800 # 50 * 1024 * 1024
+    volumes:
+      - ./downloads:/app/downloads
+      - ./cookies.txt:/app/cookies.txt
