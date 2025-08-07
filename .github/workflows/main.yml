@@ -1,0 +1,34 @@
+# .github/workflows/docker-publish.yml
+
+name: Publish Docker image to DockerHub
+
+# 触发条件：当代码被推送到 main 分支时
+on:
+  workflow_dispatch
+#  push:
+#    branches: [ "main" ]
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. 登录到 DockerHub
+      #    这里使用了 secrets，需要您在GitHub仓库中配置
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 3. 构建并推送 Docker 镜像
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # 在这里修改为您自己的DockerHub用户名和镜像名称
+          tags: balgain/tg-yt:0.0.1 # <--- 修改这里
